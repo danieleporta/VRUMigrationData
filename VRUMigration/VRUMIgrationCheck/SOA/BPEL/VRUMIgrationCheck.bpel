@@ -1,0 +1,81 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Sun Feb 01 18:05:41 CET 2015
+  Author:  maps
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="VRUMIgrationCheck"
+               targetNamespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:ui="http://xmlns.oracle.com/soa/designer"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns1="http://www.webserviceX.NET"
+         xmlns:ns2="http://oagj.bpel/VRUMigration/VRUMigrationCheck"
+         xmlns:ns3="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck/correlationset"
+         xmlns:ns4="http://www.webservicex.net/">
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="propertiesFile">
+        <![CDATA[../WSDLs/VRUMIgrationCheck_properties.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck"
+          location="../WSDLs/VRUMIgrationCheck.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="vrumigrationcheck_client" partnerLinkType="client:VRUMIgrationCheck" myRole="VRUMIgrationCheckProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:VRUMIgrationCheckRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:VRUMIgrationCheckResponseMessage"/>
+  </variables>
+  <correlationSets>
+    <correlationSet name="Correlation_SetRequestId" properties="ns3:Property2"/>
+  </correlationSets>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in VRUMIgrationCheck.wsdl) -->
+    <receive name="receiveInput" partnerLink="vrumigrationcheck_client" portType="client:VRUMIgrationCheck" operation="process" variable="inputVariable" createInstance="yes">
+      <correlations>
+        <correlation set="Correlation_SetRequestId" initiate="yes"/>
+      </correlations>
+    </receive>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="vrumigrationcheck_client" portType="client:VRUMIgrationCheck" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

@@ -1,0 +1,60 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+        targetNamespace="http://oagj.bpel/VRUMigration/VRUMigrationCheck" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="VRUCheckMigrationRequest">
+    <complexType>
+      <sequence>
+        <element name="ctx">
+          <complexType>
+            <sequence>
+              <element name="clientId" type="string"/>
+              <element name="username" type="string"/>
+              <element name="password" type="string" minOccurs="0"/>
+              <element name="transactionId" type="string" minOccurs="0"/>
+            </sequence>
+          </complexType>
+        </element>
+        <element name="requestId" type="integer"/>
+        <element name="linkAccountOld" type="integer"/>
+        <element name="tmCodeNew" type="integer"/>
+        <element name="technicalPackIdNew" type="integer"/>
+        <element name="flagSkipFees" type="boolean" minOccurs="0"/>
+        <element name="flagSkipPenalty" type="boolean" minOccurs="0"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="VRUCheckMigrationResponse">
+    <complexType>
+      <sequence>
+        <element name="resultCode" type="string"/>
+        <element name="resultDescription" type="string"/>
+        <element name="messageWithParams" maxOccurs="unbounded" minOccurs="0" nillable="true">
+          <complexType>
+            <sequence>
+              <element name="messageCode" type="string"/>
+              <element name="messageDescription" type="string"/>
+              <element name="severity">
+                <simpleType>
+                  <restriction base="string">
+                    <enumeration value="FATAL"/>
+                    <enumeration value="ERROR"/>
+                    <enumeration value="WARNING"/>
+                    <enumeration value="INFO"/>
+                  </restriction>
+                </simpleType>
+              </element>
+              <element name="parameters" maxOccurs="unbounded" minOccurs="0" nillable="true">
+                <complexType>
+                  <sequence>
+                    <element name="parName" type="string"/>
+                    <element name="parValue" type="string"/>
+                  </sequence>
+                </complexType>
+              </element>
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+</schema>
