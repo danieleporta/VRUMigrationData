@@ -40,7 +40,7 @@
     <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUPreCheckMigrationData)"/>
     <binding.ws port="http://oagj.webservices#wsdl.endpoint(VRUPreCheckMigrationDataRemote/VRUPreCheckMigrationDataRemoteHttpPort)"
                 location="http://mapsn286:8088/mockVRUPreCheckMigrationDataRemoteHttpBinding?wsdl" soapVersion="1.1">
-      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
     </binding.ws>
   </reference>
   <wire>
