@@ -13,6 +13,10 @@
            xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
   <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck"
           location="WSDLs/VRUMIgrationCheck.wsdl" importType="wsdl"/>
+  <import namespace="http://oagj.webservices" location="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBinding.wsdl"
+          importType="wsdl"/>
+  <import namespace="http://oagj.webservices" location="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBindingWrapper.wsdl"
+          importType="wsdl"/>
   <service name="vrumigrationcheck_client_ep" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
     <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.endpoint(vrumigrationcheck_client_ep/VRUMIgrationCheck_pt)"/>
@@ -25,13 +29,26 @@
       <service name="vrumigrationcheck_client" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
       </service>
-      
+      <reference name="VRUPreCheckMigrationData"
+                 ui:wsdlLocation="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBindingWrapper.wsdl">
+        <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUPreCheckMigrationData)"/>
+      </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
-  </component>  
+  </component>
+  <reference name="VRUPreCheckMigrationData" ui:wsdlLocation="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBinding.wsdl">
+    <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUPreCheckMigrationData)"/>
+    <binding.ws port="http://oagj.webservices#wsdl.endpoint(VRUPreCheckMigrationDataRemote/VRUPreCheckMigrationDataRemoteHttpPort)"
+                location="http://mapsn286:8088/mockVRUPreCheckMigrationDataRemoteHttpBinding?wsdl" soapVersion="1.1">
+      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+    </binding.ws>
+  </reference>
   <wire>
     <source.uri>vrumigrationcheck_client_ep</source.uri>
     <target.uri>VRUMIgrationCheck/vrumigrationcheck_client</target.uri>
   </wire>
-  
+  <wire>
+    <source.uri>VRUMIgrationCheck/VRUPreCheckMigrationData</source.uri>
+    <target.uri>VRUPreCheckMigrationData</target.uri>
+  </wire>
 </composite>

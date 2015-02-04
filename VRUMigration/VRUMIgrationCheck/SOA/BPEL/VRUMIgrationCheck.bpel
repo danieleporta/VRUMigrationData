@@ -19,7 +19,8 @@
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns1="http://www.webserviceX.NET"
          xmlns:ns2="http://oagj.bpel/VRUMigration/VRUMigrationCheck"
          xmlns:ns3="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck/correlationset"
-         xmlns:ns4="http://www.webservicex.net/">
+         xmlns:ns4="http://www.webservicex.net/" xmlns:ns5="http://oagj.webservices"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <bpelx:annotation>
     <bpelx:analysis>
       <bpelx:property name="propertiesFile">
@@ -42,6 +43,8 @@
       with the client role are automatically set using WS-Addressing.
     -->
     <partnerLink name="vrumigrationcheck_client" partnerLinkType="client:VRUMIgrationCheck" myRole="VRUMIgrationCheckProvider"/>
+    <partnerLink name="VRUPreCheckMigrationData" partnerLinkType="ns5:VRUPreCheckMigrationData"
+                 partnerRole="VRUPreCheckMigrationData"/>
   </partnerLinks>
 
   <!-- 
@@ -56,10 +59,11 @@
 
     <!-- Reference to the message that will be returned to the requester-->
     <variable name="outputVariable" messageType="client:VRUMIgrationCheckResponseMessage"/>
+    <variable name="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable"
+              messageType="ns5:VRUPreCheckMigrationDataRequest"/>
+    <variable name="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable"
+              messageType="ns5:VRUPreCheckMigrationDataResponse"/>
   </variables>
-  <correlationSets>
-    <correlationSet name="Correlation_SetRequestId" properties="ns3:Property2"/>
-  </correlationSets>
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
      ORCHESTRATION LOGIC                                               
@@ -70,11 +74,44 @@
   <sequence name="main">
 
     <!-- Receive input from requestor. (Note: This maps to operation defined in VRUMIgrationCheck.wsdl) -->
-    <receive name="receiveInput" partnerLink="vrumigrationcheck_client" portType="client:VRUMIgrationCheck" operation="process" variable="inputVariable" createInstance="yes">
-      <correlations>
-        <correlation set="Correlation_SetRequestId" initiate="yes"/>
-      </correlations>
-    </receive>
+    <receive name="receiveInput" partnerLink="vrumigrationcheck_client" portType="client:VRUMIgrationCheck" operation="process" variable="inputVariable" createInstance="yes"/>
+    <assign name="AssignRequestVRUPreCheck">
+      <copy>
+        <from>$inputVariable.payload/ns2:ctx/ns2:clientId</from>
+        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:clientId</to>
+      </copy>
+      <copy ignoreMissingFromData="yes">
+        <from>$inputVariable.payload/ns2:ctx/ns2:username</from>
+        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:username</to>
+      </copy>
+      <copy ignoreMissingFromData="yes">
+        <from>$inputVariable.payload/ns2:ctx/ns2:transactionId</from>
+        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:transactionId</to>
+      </copy>
+      <copy ignoreMissingFromData="yes">
+        <from>$inputVariable.payload/ns2:ctx/ns2:password</from>
+        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:password</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/ns2:requestId</from>
+        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:requestId</to>
+      </copy>
+    </assign>
+    <invoke name="InvokeVRUPreCheckMigrationData" partnerLink="VRUPreCheckMigrationData"
+            portType="ns5:VRUPreCheckMigrationData" operation="VRUPreCheckMigrationData"
+            inputVariable="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable"
+            bpelx:invokeAsDetail="no"
+            outputVariable="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable"/>
+    <assign name="AssignResponseVRUPreCheck">
+      <copy>
+        <from>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable.parameters/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultCode</from>
+        <to>$outputVariable.payload/ns2:resultCode</to>
+      </copy>
+      <copy>
+        <from>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable.parameters/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultDescription</from>
+        <to>$outputVariable.payload/ns2:resultDescription</to>
+      </copy>
+    </assign>
     <!-- Generate reply to synchronous request -->
     <reply name="replyOutput" partnerLink="vrumigrationcheck_client" portType="client:VRUMIgrationCheck" operation="process" variable="outputVariable"/>
   </sequence>

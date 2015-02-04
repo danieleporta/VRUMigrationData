@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    
+     targetNamespace="http://oagj.webservices"
+     xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://oagj.webservices"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/"
+     xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/"
+     xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"
+    >
+    <wsdl:types>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://oagj.webservices" version="1.0"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:element name="profileRequestImpl" type="ns1:profileRequestImplType" xmlns:ns1="http://oagj.webservices"/>
+            <xs:complexType name="profileRequestImplType">
+                <xs:sequence>
+                    <xs:element name="clientId" type="xs:string"/>
+                    <xs:element name="username" type="xs:string"/>
+                    <xs:element minOccurs="0" name="password" type="xs:string"/>
+                    <xs:element minOccurs="0" name="transactionId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="messageWithParams" type="ns2:messageWithParamsType" xmlns:ns2="http://oagj.webservices"/>
+            <xs:complexType name="messageWithParamsType">
+                <xs:sequence>
+                    <xs:element name="messageCode" type="xs:string"/>
+                    <xs:element name="messageDescription" type="xs:string"/>
+                    <xs:element name="severity" type="ns3:severity" xmlns:ns3="http://oagj.webservices"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="parameters" nillable="true"
+                         type="ns4:parameterObjectType" xmlns:ns4="http://oagj.webservices"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="parameterObject" type="ns5:parameterObjectType" xmlns:ns5="http://oagj.webservices"/>
+            <xs:complexType name="parameterObjectType">
+                <xs:sequence>
+                    <xs:element name="parName" type="xs:string"/>
+                    <xs:element name="parValue" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="statusResponseWithMessage" type="ns6:responseWithMessageType" xmlns:ns6="http://oagj.webservices"/>
+            <xs:complexType name="responseWithMessageType">
+                <xs:sequence>
+                    <xs:element name="resultCode" type="xs:string"/>
+                    <xs:element name="resultDescription" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="messageWithParams" nillable="true"
+                         type="ns7:messageWithParamsType" xmlns:ns7="http://oagj.webservices"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="VRUPreCheckMigrationDataRequest" type="ns8:VRUPreCheckMigrationDataType"
+                 xmlns:ns8="http://oagj.webservices"/>
+            <xs:complexType name="VRUPreCheckMigrationDataType">
+                <xs:sequence>
+                    <xs:element name="ctx" type="ns9:profileRequestImplType" xmlns:ns9="http://oagj.webservices"/>
+                    <xs:element minOccurs="0" name="requestId" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="linkDetail" type="ns12:linkDetail" xmlns:ns12="http://oagj.webservices"/>
+            <xs:complexType name="linkDetail">
+                <xs:sequence>
+                    <xs:element name="pstnId" type="xs:decimal"/>
+                    <xs:element name="linkAccount" type="xs:decimal"/>
+                    <xs:element name="status" type="ns13:linkStatusEnum" xmlns:ns13="http://oagj.webservices"/>
+                    <xs:element minOccurs="0" name="linkCharacterization" type="ns14:linkCharacterizationEnum"
+                         xmlns:ns14="http://oagj.webservices"/>
+                    <xs:element minOccurs="0" name="linkLineTypeId" type="ns15:linkLineTypeIdEnum"
+                         xmlns:ns15="http://oagj.webservices"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="services" type="ns16:linkService"
+                         xmlns:ns16="http://oagj.webservices"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="multiProductList" type="ns17:pbxCli"
+                         xmlns:ns17="http://oagj.webservices"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="linkService" type="ns18:linkService" xmlns:ns18="http://oagj.webservices"/>
+            <xs:complexType name="linkService">
+                <xs:sequence>
+                    <xs:element name="sncode" type="xs:decimal"/>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="status" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceParams" type="ns19:serviceParam"
+                         xmlns:ns19="http://oagj.webservices"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="serviceParam" type="ns20:serviceParam" xmlns:ns20="http://oagj.webservices"/>
+            <xs:complexType name="serviceParam">
+                <xs:sequence>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="value" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="pbxCli" type="ns21:pbxCli" xmlns:ns21="http://oagj.webservices"/>
+            <xs:complexType name="pbxCli">
+                <xs:sequence>
+                    <xs:element name="pbxId" type="xs:decimal"/>
+                    <xs:element name="cli" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="VRUPreCheckMigrationDataResp" type="ns22:VRUPreCheckMigrationDataResponseType"
+                 xmlns:ns22="http://oagj.webservices"/>
+            <xs:complexType name="VRUPreCheckMigrationDataResponseType">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="responseWithMessage" type="ns23:responseWithMessageType"
+                         xmlns:ns23="http://oagj.webservices"/>
+                    <xs:element minOccurs="0" ref="ns24:linkDetail" xmlns:ns24="http://oagj.webservices"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="severity">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="FATAL"/>
+                    <xs:enumeration value="ERROR"/>
+                    <xs:enumeration value="WARNING"/>
+                    <xs:enumeration value="INFO"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="yesNo">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="N"/>
+                    <xs:enumeration value="Y"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="cnEnum">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="N"/>
+                    <xs:enumeration value="C"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="linkCharacterizationEnum">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="3"/>
+                    <xs:enumeration value="2"/>
+                    <xs:enumeration value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="linkLineTypeIdEnum">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="3"/>
+                    <xs:enumeration value="2"/>
+                    <xs:enumeration value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="linkStatusEnum">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="s"/>
+                    <xs:enumeration value="p"/>
+                    <xs:enumeration value="o"/>
+                    <xs:enumeration value="d"/>
+                    <xs:enumeration value="b"/>
+                    <xs:enumeration value="a"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xsd:element name="VRUPreCheckMigrationData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="1" minOccurs="1" ref="tns:VRUPreCheckMigrationDataRequest"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="VRUPreCheckMigrationDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="1" minOccurs="1" ref="tns:VRUPreCheckMigrationDataResp"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="VRUPreCheckMigrationDataRequest">
+        <wsdl:part name="parameters" element="tns:VRUPreCheckMigrationData"/>
+    </wsdl:message>
+    <wsdl:message name="VRUPreCheckMigrationDataResponse">
+        <wsdl:part name="parameters" element="tns:VRUPreCheckMigrationDataResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="VRUPreCheckMigrationData">
+        <wsdl:operation name="VRUPreCheckMigrationData">
+            <wsdl:input name="VRUPreCheckMigrationDataRequest" message="tns:VRUPreCheckMigrationDataRequest"/>
+            <wsdl:output name="VRUPreCheckMigrationDataResponse" message="tns:VRUPreCheckMigrationDataResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="VRUPreCheckMigrationDataRemoteHttpBinding" type="tns:VRUPreCheckMigrationData">
+        <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="VRUPreCheckMigrationData">
+            <wsdlsoap:operation soapAction="urn:VRUPreCheckMigrationData"/>
+            <wsdl:input name="VRUPreCheckMigrationDataRequest">
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="VRUPreCheckMigrationDataResponse">
+                <wsdlsoap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="VRUPreCheckMigrationDataRemote">
+        <wsdl:port name="VRUPreCheckMigrationDataRemoteHttpPort" binding="tns:VRUPreCheckMigrationDataRemoteHttpBinding">
+            <wsdlsoap:address location="http://MAPSN286:8088/mockVRUPreCheckMigrationDataRemoteHttpBinding"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
