@@ -43,8 +43,6 @@
       with the client role are automatically set using WS-Addressing.
     -->
     <partnerLink name="vrumigrationcheck_client" partnerLinkType="client:VRUMIgrationCheck" myRole="VRUMIgrationCheckProvider"/>
-    <partnerLink name="VRUPreCheckMigrationData" partnerLinkType="ns5:VRUPreCheckMigrationData"
-                 partnerRole="VRUPreCheckMigrationData"/>
   </partnerLinks>
 
   <!-- 
@@ -97,11 +95,6 @@
         <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:requestId</to>
       </copy>
     </assign>
-    <invoke name="InvokeVRUPreCheckMigrationData" partnerLink="VRUPreCheckMigrationData"
-            portType="ns5:VRUPreCheckMigrationData" operation="VRUPreCheckMigrationData"
-            inputVariable="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable"
-            bpelx:invokeAsDetail="no"
-            outputVariable="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable"/>
     <assign name="AssignResponseVRUPreCheck">
       <copy>
         <from>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable.parameters/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultCode</from>
