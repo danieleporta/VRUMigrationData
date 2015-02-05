@@ -17,6 +17,8 @@
           importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck"
           location="WSDLs/MediatorPreCheck.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck"
+          location="WSDLs/MediatorPreCheckWrapper.wsdl" importType="wsdl"/>
   <service name="vrumigrationcheck_client_ep" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
     <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.endpoint(vrumigrationcheck_client_ep/VRUMIgrationCheck_pt)"/>
@@ -29,6 +31,9 @@
       <service name="vrumigrationcheck_client" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
       </service>
+      <reference name="MediatorPreCheck.MediatorPreCheck" ui:wsdlLocation="WSDLs/MediatorPreCheckWrapper.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck#wsdl.interface(execute_ptt)"/>
+      </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
   </component>
@@ -58,5 +63,9 @@
   <wire>
     <source.uri>MediatorPreCheck/VRUPreCheckMigrationData</source.uri>
     <target.uri>VRUPreCheckMigrationData</target.uri>
+  </wire>
+  <wire>
+    <source.uri>VRUMIgrationCheck/MediatorPreCheck.MediatorPreCheck</source.uri>
+    <target.uri>MediatorPreCheck/MediatorPreCheck</target.uri>
   </wire>
 </composite>

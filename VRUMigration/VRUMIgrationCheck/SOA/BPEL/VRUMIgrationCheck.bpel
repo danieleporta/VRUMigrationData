@@ -20,7 +20,8 @@
          xmlns:ns2="http://oagj.bpel/VRUMigration/VRUMigrationCheck"
          xmlns:ns3="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck/correlationset"
          xmlns:ns4="http://www.webservicex.net/" xmlns:ns5="http://oagj.webservices"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns6="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck">
   <bpelx:annotation>
     <bpelx:analysis>
       <bpelx:property name="propertiesFile">
@@ -43,6 +44,8 @@
       with the client role are automatically set using WS-Addressing.
     -->
     <partnerLink name="vrumigrationcheck_client" partnerLinkType="client:VRUMIgrationCheck" myRole="VRUMIgrationCheckProvider"/>
+    <partnerLink name="MediatorPreCheck.MediatorPreCheck" partnerLinkType="ns6:MediatorPreCheck.MediatorPreCheck"
+                 partnerRole="execute_ptt"/>
   </partnerLinks>
 
   <!-- 
@@ -57,10 +60,8 @@
 
     <!-- Reference to the message that will be returned to the requester-->
     <variable name="outputVariable" messageType="client:VRUMIgrationCheckResponseMessage"/>
-    <variable name="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable"
-              messageType="ns5:VRUPreCheckMigrationDataRequest"/>
-    <variable name="InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable"
-              messageType="ns5:VRUPreCheckMigrationDataResponse"/>
+    <variable name="InvokeMediator_execute_InputVariable" messageType="ns6:requestMessage"/>
+    <variable name="InvokeMediator_execute_OutputVariable" messageType="ns6:replyMessage"/>
   </variables>
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,36 +74,43 @@
 
     <!-- Receive input from requestor. (Note: This maps to operation defined in VRUMIgrationCheck.wsdl) -->
     <receive name="receiveInput" partnerLink="vrumigrationcheck_client" portType="client:VRUMIgrationCheck" operation="process" variable="inputVariable" createInstance="yes"/>
-    <assign name="AssignRequestVRUPreCheck">
+    <assign name="AssignRequest">
+      <copy>
+        <from>$inputVariable.payload/ns2:requestId</from>
+        <to>$InvokeMediator_execute_InputVariable.request/ns5:VRUPreCheckMigrationDataRequest/ns5:requestId</to>
+      </copy>
       <copy>
         <from>$inputVariable.payload/ns2:ctx/ns2:clientId</from>
-        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:clientId</to>
+        <to>$InvokeMediator_execute_InputVariable.request/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:clientId</to>
       </copy>
-      <copy ignoreMissingFromData="yes">
+      <copy>
         <from>$inputVariable.payload/ns2:ctx/ns2:username</from>
-        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:username</to>
-      </copy>
-      <copy ignoreMissingFromData="yes">
-        <from>$inputVariable.payload/ns2:ctx/ns2:transactionId</from>
-        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:transactionId</to>
+        <to>$InvokeMediator_execute_InputVariable.request/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:username</to>
       </copy>
       <copy ignoreMissingFromData="yes">
         <from>$inputVariable.payload/ns2:ctx/ns2:password</from>
-        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:password</to>
+        <to>$InvokeMediator_execute_InputVariable.request/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:password</to>
       </copy>
-      <copy>
-        <from>$inputVariable.payload/ns2:requestId</from>
-        <to>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_InputVariable.parameters/ns5:VRUPreCheckMigrationDataRequest/ns5:requestId</to>
+      <copy ignoreMissingFromData="yes">
+        <from>$inputVariable.payload/ns2:ctx/ns2:transactionId</from>
+        <to>$InvokeMediator_execute_InputVariable.request/ns5:VRUPreCheckMigrationDataRequest/ns5:ctx/ns5:transactionId</to>
       </copy>
     </assign>
-    <assign name="AssignResponseVRUPreCheck">
+    <invoke name="InvokeMediator" partnerLink="MediatorPreCheck.MediatorPreCheck"
+            portType="ns6:execute_ptt" operation="execute" inputVariable="InvokeMediator_execute_InputVariable"
+            outputVariable="InvokeMediator_execute_OutputVariable" bpelx:invokeAsDetail="no"/>
+    <assign name="AssignResponse">
       <copy>
-        <from>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable.parameters/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultCode</from>
+        <from>$InvokeMediator_execute_OutputVariable.reply/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultCode</from>
         <to>$outputVariable.payload/ns2:resultCode</to>
       </copy>
       <copy>
-        <from>$InvokeVRUPreCheckMigrationData_VRUPreCheckMigrationData_OutputVariable.parameters/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultDescription</from>
+        <from>$InvokeMediator_execute_OutputVariable.reply/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:resultDescription</from>
         <to>$outputVariable.payload/ns2:resultDescription</to>
+      </copy>
+      <copy ignoreMissingFromData="yes">
+        <from>$InvokeMediator_execute_OutputVariable.reply/ns5:VRUPreCheckMigrationDataResp/ns5:responseWithMessage/ns5:messageWithParams</from>
+        <to>$outputVariable.payload/ns2:messageWithParams</to>
       </copy>
     </assign>
     <!-- Generate reply to synchronous request -->

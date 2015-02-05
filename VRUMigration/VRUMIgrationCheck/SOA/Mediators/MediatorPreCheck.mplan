@@ -11,6 +11,10 @@
                </transform>
                <invoke reference="VRUPreCheckMigrationData" operation="VRUPreCheckMigrationData">
                   <onReply>
+                     <transform>
+                        <part name="$out.reply"
+                              function="xslt(../Transformations/VRUPreCheckMigrationDataResponse_To_VRUPreCheckMigrationDataResponse1.xsl, $in.parameters)"/>
+                     </transform>
                      <reply/>
                   </onReply>
                </invoke>
