@@ -54,7 +54,7 @@
             <xs:complexType name="VRUPreCheckMigrationDataType">
                 <xs:sequence>
                     <xs:element name="ctx" type="ns9:profileRequestImplType" xmlns:ns9="http://oagj.webservices"/>
-                    <xs:element minOccurs="0" name="requestId" type="xs:decimal"/>
+                    <xs:element name="requestId" type="xs:decimal"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:element name="linkDetail" type="ns12:linkDetail" xmlns:ns12="http://oagj.webservices"/>
