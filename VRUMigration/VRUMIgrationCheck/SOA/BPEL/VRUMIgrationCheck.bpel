@@ -21,7 +21,8 @@
          xmlns:ns3="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck/correlationset"
          xmlns:ns4="http://www.webservicex.net/" xmlns:ns5="http://oagj.webservices"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:ns6="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck">
+         xmlns:ns6="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck"
+         xmlns:ns7="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse">
   <bpelx:annotation>
     <bpelx:analysis>
       <bpelx:property name="propertiesFile">
@@ -46,6 +47,8 @@
     <partnerLink name="vrumigrationcheck_client" partnerLinkType="client:VRUMIgrationCheck" myRole="VRUMIgrationCheckProvider"/>
     <partnerLink name="MediatorPreCheck.MediatorPreCheck" partnerLinkType="ns6:MediatorPreCheck.MediatorPreCheck"
                  partnerRole="execute_ptt"/>
+    <partnerLink name="MediatorParse.MediatorParse" partnerLinkType="ns7:MediatorParse.MediatorParse"
+                 partnerRole="execute_ptt" myRole="callback_ptt"/>
   </partnerLinks>
 
   <!-- 

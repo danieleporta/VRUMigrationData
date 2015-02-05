@@ -19,6 +19,11 @@
           location="WSDLs/MediatorPreCheck.wsdl" importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck"
           location="WSDLs/MediatorPreCheckWrapper.wsdl" importType="wsdl"/>
+  <import namespace="http://oagj.webservices" location="WSDLs/VRUParsemigrationData.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse"
+          location="WSDLs/MediatorParse.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse"
+          location="WSDLs/MediatorParseWrapper.wsdl" importType="wsdl"/>
   <service name="vrumigrationcheck_client_ep" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
     <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.endpoint(vrumigrationcheck_client_ep/VRUMIgrationCheck_pt)"/>
@@ -33,6 +38,10 @@
       </service>
       <reference name="MediatorPreCheck.MediatorPreCheck" ui:wsdlLocation="WSDLs/MediatorPreCheckWrapper.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck#wsdl.interface(execute_ptt)"/>
+      </reference>
+      <reference name="MediatorParse.MediatorParse" ui:wsdlLocation="WSDLs/MediatorParseWrapper.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(execute_ptt)"
+                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(callback_ptt)"/>
       </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
@@ -49,10 +58,29 @@
       </reference>
     </componentType>
   </component>
+  <component name="MediatorParse">
+    <implementation.mediator src="Mediators/MediatorParse.mplan"/>
+    <componentType>
+      <service name="MediatorParse" ui:wsdlLocation="WSDLs/MediatorParse.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(execute_ptt)"
+                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(callback_ptt)"/>
+      </service>
+      <reference name="SOAPReference" ui:wsdlLocation="WSDLs/VRUParsemigrationData.wsdl">
+        <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUParseMigrationData)"/>
+      </reference>
+    </componentType>
+  </component>
   <reference name="VRUPreCheckMigrationData" ui:wsdlLocation="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBinding.wsdl">
     <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUPreCheckMigrationData)"/>
     <binding.ws port="http://oagj.webservices#wsdl.endpoint(VRUPreCheckMigrationDataRemote/VRUPreCheckMigrationDataRemoteHttpPort)"
                 location="http://localhost:8088/mockVRUPreCheckMigrationDataRemoteHttpBinding?wsdl" soapVersion="1.1">
+      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+    </binding.ws>
+  </reference>
+  <reference name="SOAPReference" ui:wsdlLocation="WSDLs/VRUParsemigrationData.wsdl">
+    <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUParseMigrationData)"/>
+    <binding.ws port="http://oagj.webservices#wsdl.endpoint(VRUParseMigrationDataRemote/VRUParseMigrationDataRemoteHttpPort)"
+                location="WSDLs/VRUParsemigrationData.wsdl" soapVersion="1.1">
       <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
     </binding.ws>
   </reference>
@@ -67,5 +95,13 @@
   <wire>
     <source.uri>VRUMIgrationCheck/MediatorPreCheck.MediatorPreCheck</source.uri>
     <target.uri>MediatorPreCheck/MediatorPreCheck</target.uri>
+  </wire>
+  <wire>
+    <source.uri>MediatorParse/SOAPReference</source.uri>
+    <target.uri>SOAPReference</target.uri>
+  </wire>
+  <wire>
+    <source.uri>VRUMIgrationCheck/MediatorParse.MediatorParse</source.uri>
+    <target.uri>MediatorParse/MediatorParse</target.uri>
   </wire>
 </composite>
