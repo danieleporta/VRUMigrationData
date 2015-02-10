@@ -62,6 +62,12 @@
     <sequence name="main">
         <!-- Receive input from requestor. (Note: This maps to operation defined in BPELProcessProducer.wsdl) -->
         <receive name="receiveInput" partnerLink="bpelprocessproducer_client" portType="client:BPELProcessProducer" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="Assign1">
+            <copy>
+                <from>$inputVariable.payload/client:requestId</from>
+                <to>$Invoke1_InputVariable/ns1:requestId</to>
+            </copy>
+        </assign>
         <invoke name="Invoke1" bpelx:eventName="ns2:Event1"
                 inputVariable="Invoke1_InputVariable" bpelx:invokeAsDetail="no"/>
         <!-- 

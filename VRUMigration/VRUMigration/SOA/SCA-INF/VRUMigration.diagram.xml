@@ -31,12 +31,12 @@
         </dgm:operations>
     </dgm:gService>
     <dgm:gComponent name="BPELProcessProducer">
-        <dgm:body borderWidth="2" arcRad="20" X="362" Y="252" width="130" height="110">
+        <dgm:body borderWidth="2" arcRad="20" X="365" Y="252" width="130" height="110">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="352" Y="245" width="150" height="126">
+        <dgm:shadow arcRad="20" X="355" Y="245" width="150" height="126">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="bpelprocessproducer_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessProducer#wsdl.interface(BPELProcessProducer)" callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessProducer#wsdl.interface(BPELProcessProducerCallback)"/>
@@ -47,12 +47,12 @@
         <dgm:publishPort name="" X="120" Y="40" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/circleEvent.png"/>
     </dgm:gComponent>
     <dgm:gComponent name="BPELProcessConsumer">
-        <dgm:body borderWidth="2" arcRad="20" X="362" Y="26" width="130" height="110">
+        <dgm:body borderWidth="2" arcRad="20" X="365" Y="26" width="130" height="110">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="352" Y="19" width="150" height="126">
+        <dgm:shadow arcRad="20" X="355" Y="19" width="150" height="126">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="bpelprocessconsumer_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer#wsdl.interface(BPELProcessConsumer)" callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer#wsdl.interface(BPELProcessConsumerCallback)"/>
@@ -63,12 +63,12 @@
         <dgm:subscribePort name="" X="-10" Y="40" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/circleEvent.png"/>
     </dgm:gComponent>
     <dgm:gWireLink source="bpelprocessproducer_client_ep" target="BPELProcessProducer/bpelprocessproducer_client" width="2">
-        <dgm:gSegment X1="168" Y1="277" X2="352" Y2="277"/>
+        <dgm:gSegment X1="168" Y1="277" X2="355" Y2="277"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="bpelprocessconsumer_client_ep" target="BPELProcessConsumer/bpelprocessconsumer_client" width="2">
-        <dgm:gSegment X1="168" Y1="51" X2="352" Y2="51"/>
+        <dgm:gSegment X1="168" Y1="51" X2="355" Y2="51"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>

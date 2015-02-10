@@ -18,7 +18,8 @@
          xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
          xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
          xmlns:ns1="http://xmlns.oracle.com/VRUMigration/VRUMigration/EventDefinition"
-         xmlns:ns2="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer/correlationset">
+         xmlns:ns2="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer/correlationset"
+         xmlns:ns3="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess">
     <bpelx:annotation>
         <bpelx:analysis>
             <bpelx:property name="propertiesFile">
