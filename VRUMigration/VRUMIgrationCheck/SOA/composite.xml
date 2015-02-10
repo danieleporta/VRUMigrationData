@@ -11,97 +11,93 @@
            xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy"
            xmlns:ui="http://xmlns.oracle.com/soa/designer/"
            xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
-  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck"
-          location="WSDLs/VRUMIgrationCheck.wsdl" importType="wsdl"/>
-  <import namespace="http://oagj.webservices" location="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBinding.wsdl"
-          importType="wsdl"/>
-  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck"
-          location="WSDLs/MediatorPreCheck.wsdl" importType="wsdl"/>
-  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck"
-          location="WSDLs/MediatorPreCheckWrapper.wsdl" importType="wsdl"/>
-  <import namespace="http://oagj.webservices" location="WSDLs/VRUParsemigrationData.wsdl" importType="wsdl"/>
-  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse"
-          location="WSDLs/MediatorParse.wsdl" importType="wsdl"/>
-  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse"
-          location="WSDLs/MediatorParseWrapper.wsdl" importType="wsdl"/>
-  <service name="vrumigrationcheck_client_ep" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
-    <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
-    <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.endpoint(vrumigrationcheck_client_ep/VRUMIgrationCheck_pt)"/>
+ 
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer"
+          location="WSDLs/EventConsumer.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventDefinition1"
+          location="Events/EventDefinition1.edl" importType="edl"/>
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess"
+          location="WSDLs/BPELProcess.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check"
+          location="WSDLs/VRUMigration_Check.wsdl" importType="wsdl"/>
+ 
+  <service name="eventconsumer_client_ep" ui:wsdlLocation="WSDLs/EventConsumer.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer#wsdl.interface(EventConsumer)"
+                    callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer#wsdl.interface(EventConsumerCallback)"/>
+    <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer#wsdl.endpoint(eventconsumer_client_ep/EventConsumer_pt)"/>
+    <callback>
+      <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer#wsdl.endpoint(eventconsumer_client_ep/EventConsumerCallback_pt)"/>
+    </callback>
+  </service>
+  <service name="bpelprocess_client_ep" ui:wsdlLocation="WSDLs/BPELProcess.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess#wsdl.interface(BPELProcess)"
+                    callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess#wsdl.interface(BPELProcessCallback)"/>
+    <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess#wsdl.endpoint(bpelprocess_client_ep/BPELProcess_pt)"/>
+    <callback>
+      <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess#wsdl.endpoint(bpelprocess_client_ep/BPELProcessCallback_pt)"/>
+    </callback>
+  </service>
+  <service name="vrumigration_check_client_ep" ui:wsdlLocation="WSDLs/VRUMigration_Check.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check#wsdl.interface(VRUMigration_Check)"
+                    callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check#wsdl.interface(VRUMigration_CheckCallback)"/>
+    <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check#wsdl.endpoint(vrumigration_check_client_ep/VRUMigration_Check_pt)"/>
+    <callback>
+      <binding.ws port="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check#wsdl.endpoint(vrumigration_check_client_ep/VRUMigration_CheckCallback_pt)"/>
+    </callback>
   </service>
   <property name="productVersion" type="xs:string" many="false">12.1.3.0.0</property>
   <property name="compositeID" type="xs:string" many="false">4fd3be06-b338-440a-80de-ac7f497730be</property>
-  <component name="VRUMIgrationCheck" version="2.0">
-    <implementation.bpel src="BPEL/VRUMIgrationCheck.bpel"/>
+  
+  <component name="EventConsumer" version="2.0">
+    <implementation.bpel src="BPEL/EventConsumer.bpel"/>
     <componentType>
-      <service name="vrumigrationcheck_client" ui:wsdlLocation="WSDLs/VRUMIgrationCheck.wsdl">
-        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMIgrationCheck#wsdl.interface(VRUMIgrationCheck)"/>
+      <service name="eventconsumer_client" ui:wsdlLocation="WSDLs/EventConsumer.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer#wsdl.interface(EventConsumer)"
+                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventConsumer#wsdl.interface(EventConsumerCallback)"/>
       </service>
-      <reference name="MediatorPreCheck.MediatorPreCheck" ui:wsdlLocation="WSDLs/MediatorPreCheckWrapper.wsdl">
-        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck#wsdl.interface(execute_ptt)"/>
-      </reference>
-      <reference name="MediatorParse.MediatorParse" ui:wsdlLocation="WSDLs/MediatorParseWrapper.wsdl">
-        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(execute_ptt)"
-                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(callback_ptt)"/>
-      </reference>
     </componentType>
-    <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
+    <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">async.persist</property>
+    <business-events>
+      <publishes xmlns:pub1="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventDefinition1" name="pub1:Event1"
+                 persistent="true" priority="4" timeToLive="0"/>
+    </business-events>
   </component>
-  <component name="MediatorPreCheck">
-    <implementation.mediator src="Mediators/MediatorPreCheck.mplan"/>
+  <component name="BPELProcess" version="2.0">
+    <implementation.bpel src="BPEL/BPELProcess.bpel"/>
     <componentType>
-      <service name="MediatorPreCheck" ui:wsdlLocation="WSDLs/MediatorPreCheck.wsdl">
-        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorPreCheck#wsdl.interface(execute_ptt)"/>
+      <service name="bpelprocess_client" ui:wsdlLocation="WSDLs/BPELProcess.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess#wsdl.interface(BPELProcess)"
+                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/BPELProcess#wsdl.interface(BPELProcessCallback)"/>
       </service>
-      <reference name="VRUPreCheckMigrationData"
-                 ui:wsdlLocation="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBinding.wsdl">
-        <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUPreCheckMigrationData)"/>
-      </reference>
     </componentType>
+    <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">async.persist</property>
   </component>
-  <component name="MediatorParse">
-    <implementation.mediator src="Mediators/MediatorParse.mplan"/>
+ 
+  <component name="VRUMigration_Check" version="2.0">
+    <implementation.bpel src="BPEL/VRUMigration_Check.bpel"/>
     <componentType>
-      <service name="MediatorParse" ui:wsdlLocation="WSDLs/MediatorParse.wsdl">
-        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(execute_ptt)"
-                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/MediatorParse#wsdl.interface(callback_ptt)"/>
+      <service name="vrumigration_check_client" ui:wsdlLocation="WSDLs/VRUMigration_Check.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check#wsdl.interface(VRUMigration_Check)"
+                        callbackInterface="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check#wsdl.interface(VRUMigration_CheckCallback)"/>
       </service>
-      <reference name="SOAPReference" ui:wsdlLocation="WSDLs/VRUParsemigrationData.wsdl">
-        <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUParseMigrationData)"/>
-      </reference>
     </componentType>
+    <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">async.persist</property>
+    <business-events>
+      <subscribe xmlns:sub1="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventDefinition1" name="sub1:Event1"
+                 consistency="oneAndOnlyOne" durable="true" runAsRoles="$publisher"/>
+    </business-events>
   </component>
-  <reference name="VRUPreCheckMigrationData" ui:wsdlLocation="WSDLs/mockVRUPreCheckMigrationDataRemoteHttpBinding.wsdl">
-    <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUPreCheckMigrationData)"/>
-    <binding.ws port="http://oagj.webservices#wsdl.endpoint(VRUPreCheckMigrationDataRemote/VRUPreCheckMigrationDataRemoteHttpPort)"
-                location="http://localhost:8088/mockVRUPreCheckMigrationDataRemoteHttpBinding?wsdl" soapVersion="1.1">
-      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
-    </binding.ws>
-  </reference>
-  <reference name="SOAPReference" ui:wsdlLocation="WSDLs/VRUParsemigrationData.wsdl">
-    <interface.wsdl interface="http://oagj.webservices#wsdl.interface(VRUParseMigrationData)"/>
-    <binding.ws port="http://oagj.webservices#wsdl.endpoint(VRUParseMigrationDataRemote/VRUParseMigrationDataRemoteHttpPort)"
-                location="WSDLs/VRUParsemigrationData.wsdl" soapVersion="1.1">
-      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
-    </binding.ws>
-  </reference>
+ 
   <wire>
-    <source.uri>vrumigrationcheck_client_ep</source.uri>
-    <target.uri>VRUMIgrationCheck/vrumigrationcheck_client</target.uri>
+    <source.uri>eventconsumer_client_ep</source.uri>
+    <target.uri>EventConsumer/eventconsumer_client</target.uri>
   </wire>
   <wire>
-    <source.uri>MediatorPreCheck/VRUPreCheckMigrationData</source.uri>
-    <target.uri>VRUPreCheckMigrationData</target.uri>
+    <source.uri>bpelprocess_client_ep</source.uri>
+    <target.uri>BPELProcess/bpelprocess_client</target.uri>
   </wire>
   <wire>
-    <source.uri>VRUMIgrationCheck/MediatorPreCheck.MediatorPreCheck</source.uri>
-    <target.uri>MediatorPreCheck/MediatorPreCheck</target.uri>
-  </wire>
-  <wire>
-    <source.uri>MediatorParse/SOAPReference</source.uri>
-    <target.uri>SOAPReference</target.uri>
-  </wire>
-  <wire>
-    <source.uri>VRUMIgrationCheck/MediatorParse.MediatorParse</source.uri>
-    <target.uri>MediatorParse/MediatorParse</target.uri>
+    <source.uri>vrumigration_check_client_ep</source.uri>
+    <target.uri>VRUMigration_Check/vrumigration_check_client</target.uri>
   </wire>
 </composite>

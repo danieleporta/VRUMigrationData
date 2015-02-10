@@ -1,0 +1,93 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Feb 09 17:18:24 CET 2015
+  Author:  mapsadmin
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="VRUMigration_Check"
+         targetNamespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/singleString"
+         xmlns:ns2="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/EventDefinition1"
+         xmlns:ns3="http://oagj.bpel/VRUMigration/VRUMigrationCheck"
+         xmlns:ns4="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check/correlationset">
+    <bpelx:annotation>
+        <bpelx:analysis>
+            <bpelx:property name="propertiesFile">
+                <![CDATA[../WSDLs/VRUMigration_Check_properties.wsdl]]>
+            </bpelx:property>
+        </bpelx:analysis>
+    </bpelx:annotation>
+    <import namespace="http://xmlns.oracle.com/singleString" location="../Schemas/EventTrigger.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check" location="../WSDLs/VRUMigration_Check.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="vrumigration_check_client" partnerLinkType="client:VRUMigration_Check" myRole="VRUMigration_CheckProvider" partnerRole="VRUMigration_CheckRequester"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:VRUMigration_CheckRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:VRUMigration_CheckResponseMessage"/>
+        <variable name="event_InputVariable" element="ns1:process"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="Correlation_Set1" properties="ns4:Property1"/>
+    </correlationSets>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in VRUMigration_Check.wsdl) -->
+        <receive name="receiveInput" partnerLink="vrumigration_check_client" portType="client:VRUMigration_Check" operation="process" variable="inputVariable" createInstance="yes">
+            <correlations>
+                <correlation set="Correlation_Set1" initiate="yes"/>
+            </correlations>
+        </receive>
+        <pick name="Pick1">
+            <onMessage bpelx:eventName="ns2:Event1" variable="event_InputVariable">
+                <correlations>
+                    <correlation set="Correlation_Set1" initiate="no"/>
+                </correlations>
+                <empty name="Empty1"/>
+            </onMessage>
+        </pick>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="vrumigration_check_client" portType="client:VRUMigration_CheckCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

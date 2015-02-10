@@ -1,0 +1,50 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="VRUMigration_Check"
+     targetNamespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check"
+     xmlns:ns1="http://oagj.bpel/VRUMigration/VRUMigrationCheck"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ns2="http://xmlns.oracle.com/singleString"
+     xmlns:cor="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check/correlationset"
+     xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+    >
+    <plnk:partnerLinkType name="VRUMigration_Check">
+        <plnk:role name="VRUMigration_CheckProvider" portType="client:VRUMigration_Check"/>
+        <plnk:role name="VRUMigration_CheckRequester" portType="client:VRUMigration_CheckCallback"/>
+    </plnk:partnerLinkType>
+    <vprop:propertyAlias propertyName="cor:Property1" xmlns:ns1="http://oagj.bpel/VRUMigration/VRUMigrationCheck"
+         element="ns1:VRUCheckMigrationRequest"/>
+    <vprop:propertyAlias propertyName="cor:Property1" xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check"
+         messageType="client:VRUMigration_CheckRequestMessage" part="payload" xmlns:ns3="http://oagj.bpel/VRUMigration/VRUMigrationCheck">
+        <vprop:query>ns3:requestId</vprop:query>
+    </vprop:propertyAlias>
+    <wsdl:import namespace="http://xmlns.oracle.com/VRUMigration/VRUMIgrationCheck/VRUMigration_Check/correlationset"
+         location="VRUMigration_Check_properties.wsdl"/>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://oagj.bpel/VRUMigration/VRUMigrationCheck" schemaLocation="../Schemas/VRUMigrationcheck.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.oracle.com/singleString" schemaLocation="../Schemas/EventTrigger.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="VRUMigration_CheckRequestMessage">
+        <wsdl:part name="payload" element="ns1:VRUCheckMigrationRequest"/>
+    </wsdl:message>
+    <wsdl:message name="VRUMigration_CheckResponseMessage">
+        <wsdl:part name="payload" element="ns1:VRUCheckMigrationResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="VRUMigration_Check">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:VRUMigration_CheckRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="VRUMigration_CheckCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:VRUMigration_CheckResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

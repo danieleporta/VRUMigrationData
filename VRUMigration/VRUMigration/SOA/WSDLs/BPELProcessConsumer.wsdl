@@ -1,0 +1,48 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="BPELProcessConsumer"
+     targetNamespace="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:cor="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer/correlationset"
+     xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop">
+    <plnk:partnerLinkType name="BPELProcessConsumer">
+        <plnk:role name="BPELProcessConsumerProvider" portType="client:BPELProcessConsumer"/>
+        <plnk:role name="BPELProcessConsumerRequester" portType="client:BPELProcessConsumerCallback"/>
+    </plnk:partnerLinkType>
+   
+      
+    <vprop:propertyAlias propertyName="cor:Property1" xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer"
+         messageType="client:BPELProcessConsumerRequestMessage" part="payload">        
+    </vprop:propertyAlias>     
+ 
+    <wsdl:import namespace="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer/correlationset"
+         location="../WSDLs/BPELProcessConsumer_properties.wsdl"/>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+            <import namespace="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer"
+                 schemaLocation="../Schemas/BPELProcessConsumer.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="BPELProcessConsumerRequestMessage">
+        <wsdl:part name="payload" element="client:process"/>
+    </wsdl:message>
+    <wsdl:message name="BPELProcessConsumerResponseMessage">
+        <wsdl:part name="payload" element="client:processResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="BPELProcessConsumer">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:BPELProcessConsumerRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="BPELProcessConsumerCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:BPELProcessConsumerResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

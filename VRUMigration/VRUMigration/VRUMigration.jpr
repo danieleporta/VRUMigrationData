@@ -65,7 +65,7 @@
       <string v="oracle.sb.tooling.ide.core.projects.SbProjectSettings/sbContentSet"/>
       <string v="oracle.jdeveloper.model.PathsConfiguration/cepContentSet"/>
    </list>
-   <value n="defaultPackage" v="vrumigrationcheck"/>
+   <value n="defaultPackage" v="vrumigration"/>
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
          <string v="Maven"/>
@@ -104,7 +104,7 @@
    </hash>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="profileDefinitions">
-         <hash n="VRUMIgrationCheck">
+         <hash n="VRUMigration">
             <hash n="archiveOptions">
                <value n="hasManifest" v="false"/>
             </hash>
@@ -179,21 +179,21 @@
                   </hash>
                </list>
             </hash>
-            <url n="jarURL" path="deploy/sca_VRUMIgrationCheck${composite.revision_id}.jar"/>
+            <url n="jarURL" path="deploy/sca_VRUMigration${composite.revision_id}.jar"/>
             <value n="profileClass" v="oracle.tip.tools.ide.fabric.deploy.sar.SarProfile"/>
-            <value n="profileName" v="VRUMIgrationCheck"/>
+            <value n="profileName" v="VRUMigration"/>
          </hash>
       </hash>
       <list n="profileList">
-         <string v="VRUMIgrationCheck"/>
+         <string v="VRUMigration"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.maven.compiler.MavenConfiguration">
       <url n="pomfileURL" path="pom.xml"/>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
-      <value n="j2eeWebAppName" v="VRUMigration-VRUMIgrationCheck-webapp"/>
-      <value n="j2eeWebContextRoot" v="VRUMigration-VRUMIgrationCheck-context-root"/>
+      <value n="j2eeWebAppName" v="VRUMigration-VRUMigration-webapp"/>
+      <value n="j2eeWebContextRoot" v="VRUMigration-VRUMigration-context-root"/>
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">
@@ -282,9 +282,5 @@
       </hash>
    </hash>
    <value n="SCA_BPEL_FOLDER_PROPERTY_NAME" v="BPEL/"/>
-   <value n="SCA_MEDIATOR_FOLDER_PROPERTY_NAME" v="Mediators/"/>
    <value n="SOA_EVENT_FOLDER_NAME" v="Events/"/>
-   <value n="SOA_SCHEMA_FOLDER_NAME" v="Schemas/"/>
-   <value n="SOA_TRANSFORMATION_FOLDER_NAME" v="Transformations/"/>
-   <value n="SOA_WSDL_FOLDER_NAME" v="WSDLs/"/>
 </jpr:project>

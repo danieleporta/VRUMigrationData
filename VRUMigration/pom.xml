@@ -8,5 +8,6 @@
     <modules>
         <!-- Add project modules -->
     	<module>VRUMIgrationCheck</module>
+    	<module>VRUMigration</module>
     </modules>
 </project>

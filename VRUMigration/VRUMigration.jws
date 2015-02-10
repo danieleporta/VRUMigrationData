@@ -26,6 +26,7 @@
       <string v="oracle.jdeveloper.model.PathsConfiguration/ResourceBundlesContentSet"/>
    </list>
    <list n="listOfChildren">
+      <hash><url n="URL" path="VRUMigration/VRUMigration.jpr"/></hash>
       <hash><url n="URL" path="VRUMIgrationCheck/VRUMIgrationCheck.jpr"/></hash>
    </list>
 </jws:workspace>

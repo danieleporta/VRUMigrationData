@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<definitions xmlns="http://schemas.oracle.com/events/edl" targetNamespace="http://xmlns.oracle.com/VRUMigration/VRUMigration/EventDefinition">
+   <schema-import location="../Schemas/BPELProcessConsumer.xsd" namespace="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer"/>
+   <event-definition name="Event1">
+      <content xmlns:ns1="http://xmlns.oracle.com/VRUMigration/VRUMigration/BPELProcessConsumer" element="ns1:process"/>
+   </event-definition>
+</definitions>
